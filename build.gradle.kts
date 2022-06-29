@@ -71,10 +71,13 @@ allprojects {
         mavenCentral()
         google()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://androidx.dev/storage/compose-compiler/repository")
     }
-}
 
-// Workaround for https://youtrack.jetbrains.com/issue/KT-49109 until Kotlin 1.6.20
-plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
-    the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().nodeVersion = "16.0.0"
+    afterEvaluate {
+        // Workaround: https://youtrack.jetbrains.com/issue/KT-52776
+        rootProject.extensions.findByType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>()?.apply {
+            versions.webpackCli.version = "4.10.0"
+        }
+    }
 }

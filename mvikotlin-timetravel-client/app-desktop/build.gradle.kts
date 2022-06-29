@@ -16,6 +16,10 @@ setupMultiplatform {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+}
+
 kotlin {
     setupSourceSets {
         val jvm by bundle()
@@ -35,6 +39,20 @@ kotlin {
             implementation(compose.material)
             implementation(compose.materialIconsExtended)
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("org.jetbrains.compose.compiler:compiler")).apply {
+            using(module("androidx.compose.compiler:compiler:1.2.0-dev-k1.7.0-53370d83bb1"))
+//            using(module("org.jetbrains.compose.compiler:compiler:1.2.0-alpha01-dev725"))
+        }
+
+//        substitute(module("org.jetbrains.compose.compiler:compiler"))
+//            .using(module("androidx.compose.compiler:compiler:1.2.0-dev-k1.7.0-53370d83bb1"))
+////            .using(module("androidx.compose.compiler:compiler:1.2.0-rc02"))
+//            .because("using the compose pre-release compiler")
     }
 }
 

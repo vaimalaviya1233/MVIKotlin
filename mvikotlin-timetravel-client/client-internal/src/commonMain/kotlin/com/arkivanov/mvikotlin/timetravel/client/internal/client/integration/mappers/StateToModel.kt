@@ -52,7 +52,15 @@ private fun State.Connection.toButtons(): Model.Buttons =
         isDebugEventEnabled = isDebuggableEventSelected(),
         isExportEventsEnabled = isModeStopped(),
         isImportEventsEnabled = isModeIdle()
-    )
+    ).also {
+        println(
+            when (this) {
+                is State.Connection.Connected -> "Connected: ${mode.name}"
+                is State.Connection.Connecting -> "Connecting"
+                is State.Connection.Disconnected -> "Disconnected"
+            }
+        )
+    }
 
 private fun State.Connection.isModeIdle(): Boolean =
     when (this) {

@@ -5,14 +5,18 @@ import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.arkivanov.mvikotlin.timetravel.client.internal.client.TimeTravelClient
 import com.arkivanov.mvikotlin.timetravel.client.internal.client.integration.TimeTravelClientComponent
-import org.jetbrains.compose.web.renderComposableInBody
+import kotlinx.browser.document
+import react.create
+import react.dom.client.createRoot
 
 fun main() {
-    val client = client()
+    val client_ = client()
 
-    renderComposableInBody {
-        TimeTravelClientContent(client)
-    }
+    createRoot(document.body!!).render(
+        TimeTravelClientContent.create {
+            client = client_
+        }
+    )
 }
 
 private fun client(): TimeTravelClient {
